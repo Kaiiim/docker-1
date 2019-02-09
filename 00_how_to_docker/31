@@ -1,3 +1,1 @@
-docker service rm rwrhpw6joc3z
-uh2fg8z837ob
-mis22uonxpg9
+docker service rm $(docker service ls -q)
