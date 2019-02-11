@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+    server:
+        privileged: true
+        build: .
+        ports:
+            - "8888:80" 
+            - "8887:22"
+            - "8886:443"
+        tty: true
+
