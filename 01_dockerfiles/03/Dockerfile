@@ -37,17 +37,17 @@ EXPOSE 22 80 443
 RUN mkdir -p /etc/gitlab/ssl
 RUN chmod 700 /etc/gitlab/ssl
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:4096 \
-	-subj /C=FR/ST=75/L=Paris/O=42/OU=42/CN=127.0.0.1/emailAddress=kkhalfao@student.42.fr \
+	-subj /C=FR/ST=75/L=Paris/O=42/OU=42/CN=192.168.99.100/emailAddress=kkhalfao@student.42.fr \
 	-keyout /etc/gitlab/ssl/selfsigned.key -out /etc/gitlab/ssl/selfsigned.crt
 
 
 ## Changement des configs du fichier gitlab.rb
 
 ENV var1="external_url 'http:\/\/gitlab.example.com'" \
-	var2="external_url 'https:\/\/gitlab.example.com'" \
+	var2="external_url 'https:\/\/192.168.99.100'" \
 	\
-	var3="# letsencrypt\['enable'\] = nil" \
-	var4="letsencrypt\['enable'\] = true" \
+#	var3="# letsencrypt\['enable'\] = nil" \
+#	var4="letsencrypt\['enable'\] = true" \
 	\
 	var5="# nginx\['redirect_http_to_https'\] = false" \
 	var6="nginx\['redirect_http_to_https'\] = true" \
@@ -62,7 +62,7 @@ ENV var1="external_url 'http:\/\/gitlab.example.com'" \
 	var12="gitlab_rails\['gitlab_shell_ssh_port'\] = 2222"
 
 RUN sed -i -e "s/$var1/$var2/g" /etc/gitlab/gitlab.rb \
-	&& sed -i -e "s/$var3/$var4/g" /etc/gitlab/gitlab.rb \
+#	&& sed -i -e "s/$var3/$var4/g" /etc/gitlab/gitlab.rb \
 	&& sed -i -e "s/$var5/$var6/g" /etc/gitlab/gitlab.rb \ 
 	&& sed -i -e "s/$var7/$var8/g" /etc/gitlab/gitlab.rb \ 
 	&& sed -i -e "s/$var9/$var10/g" /etc/gitlab/gitlab.rb \ 
