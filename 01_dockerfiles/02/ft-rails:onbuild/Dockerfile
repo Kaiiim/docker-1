@@ -1,22 +1,17 @@
-FROM ruby
+FROM ruby:2.5.1
 
-RUN apt-get update && apt-get install nodejs -y \
-		&& apt-get autoclean -y \
-		&& apt-get clean -y \
-		&& gem install rails
+# Initialisation
+RUN apt-get update && apt-get install -y nodejs
+RUN gem install rails bundler
 
-# Copy l'application dans le repertoire du contener
-ONBUILD COPY ../app /opt/app
-
-# Installation 
-ONBUILD RUN bundle install && \
-			rake db:migrate && \
-			rake db:setup && \
-			rake db:seed
-
-# repertoire de travail + ouverture du port
-ONBUILD EXPOSE 3000
+# Copy app 
+COPY app /opt/app
 WORKDIR /opt/app
 
+## Config app
+ONBUILD RUN bundler install
+ONBUILD RUN rails db:migrate
+ONBUILD RUN rails db:seed
+
 #docker build -t ft-rails:on-build .
-#docker run -it --rm ft-rails:on-build
+#docker run -it -p 3000:3000 --rm ft-rails:on-build
