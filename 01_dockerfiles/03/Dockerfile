@@ -1,3 +1,5 @@
+#VM optimisation : docker-machine create --driver virtualbox --virtualbox-memory "4096" --virtualbox-cpu-count "2" Char
+
 FROM debian
 
 MAINTAINER kkhalfao <kkhalfao@student.42.fr>
@@ -30,9 +32,11 @@ RUN apt update \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # exposition des ports du container
-EXPOSE 22 80 443
+EXPOSE 22 2222 80 443
 
-# HTPPS 
+# HTPPS
+## Chrome exige que les sites utilisent des certificats provenant d'organismes approuvés -> Safari
+## https://support.google.com/chrome/answer/95617?visit_id=636857337119823275-565487570&p=ui_security_indicator&rd=1 
 ## Creation ssl
 RUN mkdir -p /etc/gitlab/ssl
 RUN chmod 700 /etc/gitlab/ssl
@@ -45,9 +49,6 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:4096 \
 
 ENV var1="external_url 'http:\/\/gitlab.example.com'" \
 	var2="external_url 'https:\/\/192.168.99.100'" \
-	\
-#	var3="# letsencrypt\['enable'\] = nil" \
-#	var4="letsencrypt\['enable'\] = true" \
 	\
 	var5="# nginx\['redirect_http_to_https'\] = false" \
 	var6="nginx\['redirect_http_to_https'\] = true" \
@@ -62,7 +63,6 @@ ENV var1="external_url 'http:\/\/gitlab.example.com'" \
 	var12="gitlab_rails\['gitlab_shell_ssh_port'\] = 2222"
 
 RUN sed -i -e "s/$var1/$var2/g" /etc/gitlab/gitlab.rb \
-#	&& sed -i -e "s/$var3/$var4/g" /etc/gitlab/gitlab.rb \
 	&& sed -i -e "s/$var5/$var6/g" /etc/gitlab/gitlab.rb \ 
 	&& sed -i -e "s/$var7/$var8/g" /etc/gitlab/gitlab.rb \ 
 	&& sed -i -e "s/$var9/$var10/g" /etc/gitlab/gitlab.rb \ 
@@ -76,7 +76,6 @@ ENTRYPOINT service ssh start \
 			&& gitlab-ctl reconfigure \
 			&& gitlab-ctl tail
 
-#docker build -t karim/ex03/01 .
-#docker run -it --rm -p 8885:80 -p 21:22 -p 8884:443 --privileged karim/ex03/01
-
-
+# docker build -t karim/ex03/01 .
+# docker run --name gitlab-ce-k -it -p 80:80 -p 2222:22 -p 443:443 --privileged --rm karim/ex03/01
+# creation clef ssh : ssh-keygen -t rsa -C "kkhalfao@student.42.fr"
