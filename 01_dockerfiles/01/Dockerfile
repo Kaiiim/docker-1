@@ -32,5 +32,5 @@ COPY ts3server.ini /home/teamspeak/teamspeak3-server_linux-amd64/
 ### commande de lancement du script server
 CMD /home/teamspeak/teamspeak3-server_linux-amd64/ts3server_minimal_runscript.sh start
 
-# docker build -t karimm
-# #docker run -it --rm -p=9987:9987/udp  -p=10011:10011 -p=30033:30033 karimm
+# docker build -t karim/ts3 .
+# #docker run -it --rm -p=9987:9987/udp  -p=10011:10011 -p=30033:30033 karim/ts3

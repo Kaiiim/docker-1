@@ -1,5 +1,11 @@
+# docker build -t ex00 .
+# docker run -it --rm ex00
+
 FROM alpine
 
-RUN apk update && apk add vim
+MAINTAINER kkhalfao <kkhalfao@student.42.fr>
 
-CMD ["vim"]
+RUN apk update && apk upgrade
+RUN apk add vim
+ENTRYPOINT vim
+
