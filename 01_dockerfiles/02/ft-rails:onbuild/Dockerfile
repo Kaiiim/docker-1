@@ -14,4 +14,3 @@ ONBUILD RUN rails db:migrate
 ONBUILD RUN rails db:seed
 
 #docker build -t ft-rails:on-build .
-#docker run -it -p 3000:3000 --rm ft-rails:on-build
