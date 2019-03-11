@@ -1,5 +1,6 @@
 # Docker
 
+
 Introduction to Docker
 
 ## Setup docker-machine:
@@ -8,6 +9,7 @@ export MACHINE_STORAGE_PATH=/tmp
 docker-machine create default
 eval $(docker-machine env default)
 ```
+
 
 ## Setup docker-for-mac at 42:
 ```
